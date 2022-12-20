@@ -9,12 +9,12 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 {% endblock %}
 
-{% block title %}My Top 10 Movies{% endblock %}
+{% block title %}Zoul's Movie Depository{% endblock %}
 
 {% block content %}
 <div class="container">
-  <h1 class="heading">My Top 10 Movies</h1>
-  <p class="description">These are my all-time favourite movies.</p>
+  <h1 class="heading">Zoul's Movie Depository</h1>
+  <p class="description">These are all the movies that I have watched</p>
 
 {% for movie in movies: %}
   <div class="card" >
