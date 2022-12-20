@@ -3,7 +3,6 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
 import requests
 
 app = Flask(__name__)
@@ -12,8 +11,8 @@ Bootstrap(app)
 
 
 class UpdateMovie(FlaskForm):
-    rating = StringField('You Rating Out Of 10', validators=[DataRequired()])
-    review = StringField('Your Review', validators=[DataRequired()])
+    rating = StringField('You Rating Out Of 10')
+    review = StringField('Your Review')
     submit = SubmitField('Done')
 
 
@@ -65,8 +64,26 @@ def home():
 def edit():
     form = UpdateMovie()
     if form.validate_on_submit():
+        # Update A Record By PRIMARY KEY
+        movie_id = request.args.get('id')
+        movie_selected = Movie.query.get(movie_id)
+        movie_selected.rating = float(form.rating.data)
+        movie_selected.review = form.review.data
+        db.session.commit()
         return redirect(url_for('home'))
-    return render_template('edit.html', form=form)
+    movie_id = request.args.get('id')
+    movie_selected = Movie.query.get(movie_id)
+    return render_template('edit.html', form=form, movie=movie_selected)
+
+
+@app.route('/delete')
+def delete():
+    # Delete A Particular Record By PRIMARY KEY
+    movie_id = request.args.get('id')
+    movie_to_delete = Movie.query.get(movie_id)
+    db.session.delete(movie_to_delete)
+    db.session.commit()
+    return redirect(url_for('home'))
 
 
 if __name__ == '__main__':

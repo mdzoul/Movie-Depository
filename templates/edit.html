@@ -11,11 +11,12 @@
 {% block title %}Edit Movies{% endblock %}
 
 {% block content %}
-<form action="{{ url_for('edit') }}" method="POST">
-    <div class="content">
-        <h1 class="heading">Movie Title</h1>
-        <p class="description">Edit Movie Rating</p>
+<div class="content">
+    <h1 class="heading">{{movie.title}}</h1>
+    <p class="description">Edit Movie Rating</p>
+    <form action="{{ url_for('edit', id=movie.id) }}" method="POST">
         {{ wtf.quick_form(form, novalidate=True) }}
-    </div>
-</form>
+    </form>
+
+</div>
 {% endblock %}
